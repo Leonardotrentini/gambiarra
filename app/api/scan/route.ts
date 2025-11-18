@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { DomainCrawler } from '@/lib/crawler';
 import { ScanResult } from '@/types';
 
+export const maxDuration = 300; // 5 minutos para operações longas
+
 export async function POST(request: NextRequest) {
   try {
     const { url, maxDepth, maxPages, usePuppeteer } = await request.json();
@@ -14,8 +16,9 @@ export async function POST(request: NextRequest) {
     }
 
     // Validar URL
+    let validUrl: string;
     try {
-      new URL(url);
+      validUrl = new URL(url).href;
     } catch {
       return NextResponse.json(
         { error: 'URL inválida' },
@@ -23,7 +26,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const crawler = new DomainCrawler(url, {
+    const crawler = new DomainCrawler(validUrl, {
       maxDepth: maxDepth || 5,
       maxPages: maxPages || 100,
       usePuppeteer: usePuppeteer !== false,
@@ -42,7 +45,7 @@ export async function POST(request: NextRequest) {
 
     const result: ScanResult = {
       files,
-      domain: new URL(url).hostname,
+      domain: new URL(validUrl).hostname,
       totalFiles: files.length,
       totalSize,
       categories,

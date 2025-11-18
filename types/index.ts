@@ -23,3 +23,49 @@ export interface ScanResult {
   categories: Record<string, number>;
 }
 
+export interface ButtonContent {
+  text: string;
+  selector: string;
+  html: string;
+  url: string;
+  type?: string;
+  classes?: string[];
+  href?: string;
+}
+
+export interface PixelTracking {
+  type: 'facebook' | 'google' | 'tiktok' | 'pinterest' | 'linkedin' | 'other';
+  code: string;
+  selector: string;
+  html: string;
+  url: string;
+  id?: string;
+}
+
+export interface ContentAnalysis {
+  buttons: ButtonContent[];
+  pixels: PixelTracking[];
+  url: string;
+}
+
+export interface ButtonReplacement {
+  url: string;
+  selector: string;
+  newText: string;
+  newHref?: string;
+}
+
+export interface PixelReplacement {
+  url: string;
+  selector: string;
+  pixelType: string;
+  newPixelHtml?: string;
+  newPixelToken?: string;
+  action?: 'replace' | 'remove';
+}
+
+export interface Replacements {
+  buttons: ButtonReplacement[];
+  pixels: PixelReplacement[];
+}
+
