@@ -1,0 +1,33 @@
+═══════════════════════════════════════════════════════════════
+  COMANDOS EXATOS PARA RODAR O PROJETO
+═══════════════════════════════════════════════════════════════
+
+1. ABRIR A PASTA:
+   cd "C:\Users\Leonardo trentini\Desktop\gambiarra"
+
+2. INSTALAR DEPENDÊNCIAS (primeira vez apenas):
+   npm install
+
+3. RODAR O SERVIDOR:
+   npm run dev
+
+4. ACESSAR NO NAVEGADOR:
+   http://localhost:3000
+
+═══════════════════════════════════════════════════════════════
+  COMANDOS ADICIONAIS
+═══════════════════════════════════════════════════════════════
+
+- Parar o servidor: Ctrl + C (no PowerShell)
+
+- Criar build de produção:
+  npm run build
+
+- Rodar produção:
+  npm run start
+
+- Verificar erros de código:
+  npm run lint
+
+═══════════════════════════════════════════════════════════════
+
