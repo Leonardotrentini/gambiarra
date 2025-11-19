@@ -64,6 +64,15 @@ export interface PixelReplacement {
   action?: 'replace' | 'remove';
 }
 
+// Tipo para uso em Maps (sem a propriedade 'url')
+export type PixelReplacementMapValue = {
+  selector: string;
+  pixelType: string;
+  newPixelHtml?: string;
+  newPixelToken?: string;
+  action?: 'replace' | 'remove';
+};
+
 export interface Replacements {
   buttons: ButtonReplacement[];
   pixels: PixelReplacement[];

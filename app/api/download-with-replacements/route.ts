@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { FileDownloader } from '@/lib/downloader';
-import { ScannedFile, Replacements } from '@/types';
+import { ScannedFile, Replacements, PixelReplacementMapValue } from '@/types';
 import { ContentAnalyzer } from '@/lib/content-analyzer';
 import axios from 'axios';
 
@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
 
     // Agrupar substituições por URL
     const buttonReplacementsByUrl = new Map<string, Array<{ selector: string; newText: string; newHref?: string }>>();
-    const pixelReplacementsByUrl = new Map<string, Array<{ selector: string; pixelType: string; newPixelHtml?: string; newPixelToken?: string }>>();
+    const pixelReplacementsByUrl = new Map<string, Array<PixelReplacementMapValue>>();
 
     replacementsData.buttons.forEach(replacement => {
       if (!buttonReplacementsByUrl.has(replacement.url)) {
@@ -39,13 +39,15 @@ export async function POST(request: NextRequest) {
       if (!pixelReplacementsByUrl.has(replacement.url)) {
         pixelReplacementsByUrl.set(replacement.url, []);
       }
-      pixelReplacementsByUrl.get(replacement.url)!.push({
+      // Criar objeto com tipo explícito para evitar erro de inferência do TypeScript
+      const pixelReplacement: PixelReplacementMapValue = {
         selector: replacement.selector,
         pixelType: replacement.pixelType,
         newPixelHtml: replacement.newPixelHtml,
         newPixelToken: replacement.newPixelToken,
         action: replacement.action || 'replace',
-      });
+      };
+      pixelReplacementsByUrl.get(replacement.url)!.push(pixelReplacement);
     });
 
     // Baixar e processar arquivos com substituições
