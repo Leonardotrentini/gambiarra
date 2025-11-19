@@ -39,13 +39,20 @@ export async function POST(request: NextRequest) {
       if (!pixelReplacementsByUrl.has(replacement.url)) {
         pixelReplacementsByUrl.set(replacement.url, []);
       }
-      // Criar objeto com tipo explícito para evitar erro de inferência do TypeScript
+      // Extrair valores primeiro para evitar inferência incorreta do TypeScript
+      const selector = replacement.selector;
+      const pixelType = replacement.pixelType;
+      const newPixelHtml = replacement.newPixelHtml;
+      const newPixelToken = replacement.newPixelToken;
+      const action = (replacement.action || 'replace') as 'replace' | 'remove';
+      
+      // Criar objeto com tipo explícito usando variáveis já tipadas
       const pixelReplacement: PixelReplacementMapValue = {
-        selector: replacement.selector,
-        pixelType: replacement.pixelType,
-        newPixelHtml: replacement.newPixelHtml,
-        newPixelToken: replacement.newPixelToken,
-        action: replacement.action || 'replace',
+        selector,
+        pixelType,
+        ...(newPixelHtml !== undefined && { newPixelHtml }),
+        ...(newPixelToken !== undefined && { newPixelToken }),
+        action,
       };
       pixelReplacementsByUrl.get(replacement.url)!.push(pixelReplacement);
     });
