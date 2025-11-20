@@ -11,7 +11,10 @@ export async function POST(request: NextRequest) {
       const buffer = await FileDownloader.downloadFile(url);
       const fileName = FileDownloader.getFileNameFromPath(new URL(url).pathname);
       
-      return new NextResponse(buffer, {
+      // Converter Buffer para Uint8Array para compatibilidade com NextResponse
+      const bufferArray = new Uint8Array(buffer);
+      
+      return new NextResponse(bufferArray, {
         headers: {
           'Content-Type': 'application/octet-stream',
           'Content-Disposition': `attachment; filename="${fileName}"`,
@@ -25,7 +28,10 @@ export async function POST(request: NextRequest) {
       const zipBuffer = await FileDownloader.downloadAllAsZip(scannedFiles);
       const domain = new URL(scannedFiles[0].url).hostname;
       
-      return new NextResponse(zipBuffer, {
+      // Converter Buffer para Uint8Array para compatibilidade com NextResponse
+      const zipArray = new Uint8Array(zipBuffer);
+      
+      return new NextResponse(zipArray, {
         headers: {
           'Content-Type': 'application/zip',
           'Content-Disposition': `attachment; filename="${domain}-files.zip"`,

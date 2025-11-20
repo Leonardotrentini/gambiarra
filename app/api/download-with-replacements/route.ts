@@ -66,7 +66,10 @@ export async function POST(request: NextRequest) {
 
     const domain = new URL(scannedFiles[0].url).hostname;
     
-    return new NextResponse(zipBuffer, {
+    // Converter Buffer para Uint8Array para compatibilidade com NextResponse
+    const zipArray = new Uint8Array(zipBuffer);
+    
+    return new NextResponse(zipArray, {
       headers: {
         'Content-Type': 'application/zip',
         'Content-Disposition': `attachment; filename="${domain}-wordpress-ready.zip"`,
